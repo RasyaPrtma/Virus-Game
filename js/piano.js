@@ -130,7 +130,7 @@ class VirusGame {
             this.ctx.rect(length.x, length.y, this.canvas.width / 4.1, 180)
             this.ctx.fill()
 
-            this.indexPress !== null && this.indexPress == index ? this.ctx.strokeStyle = "yellow" : this.ctx.strokeStyle = "#262626";
+            this.ctx.fillStlye = this.indexPress !== null && this.indexPress == index ? "#ffff4e8f" : "#262626";
             this.ctx.strokeRect(length.x, length.y, this.canvas.width / 4.1, 180);
             this.ctx.closePath()
 
