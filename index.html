@@ -1,13 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virus Game</title>
     <link rel="shortcut icon" href="Assets/virus.svg" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
-    <h1>Hello World!</h1>
-    <!-- <img src="Assets/virus.svg" alt=""> -->
+    <div class="container" id="game">
+        <div class="wrapper-game-status">
+            <div class="status Time">
+                Time: <span id="timer">00:00</span>
+            </div>
+            <div class="status Score">
+                Score: <span id="score">0</span>
+            </div>
+            <div class="status Fail">
+                Fail: <span id="fail">0</span>
+            </div>
+            <div class="status Player">
+                Player: <span>Your Name</span>
+            </div>
+            <div class="game-menu">
+                <div class="wrap">
+                    <h2>Virus Slayer</h2>
+                    <div class="wrapper-link">
+                        <a id="restart">Restart</a>
+                        <a id="quit">Quit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="game-board">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+    <script src="js/piano.js"></script>
+    <script src="js/script.js"></script>
 </body>
+
 </html>
