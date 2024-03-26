@@ -202,6 +202,10 @@ class VirusGame {
         })
     }
 
+    updateSpeed(){
+        this.VirusDy <= 5 ? this.VirusDy += 0.1 : this.VirusDy = 5;
+    }
+
     update(timestamp) {
         if (this.gameStatus == 'play') {
             this.updateVirus()
@@ -291,7 +295,13 @@ class VirusGame {
                 }
                 this.generateVirus();
             }
-        }, this.VirusTimeGenereate)
+        }, this.VirusTimeGenereate);
+
+        setInterval(() => {
+            if(this.score % 10 == 0 && this.score > 0){
+                this.updateSpeed()
+            }
+        },1000)
     }
 
     render(timestamp) {
@@ -315,12 +325,14 @@ class VirusGame {
 
         if (this.gameStatus == 'play') {
             this.Virus.forEach(virus => {
-                virus.y += this.VirusDy
+                virus.y += this.VirusDy;
+                console.log(this.VirusDy)
             })
         }
 
         requestAnimationFrame((timestamp) => {
             this.render(timestamp);
+            this.timestamp = timestamp;
         })
     }
 
