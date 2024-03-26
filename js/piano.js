@@ -283,7 +283,6 @@ class VirusGame {
                 this.indexPress = null;
             }
         })
-        F
 
         setInterval(() => {
             if (this.gameStatus == 'play') {
