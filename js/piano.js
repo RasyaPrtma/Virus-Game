@@ -203,7 +203,7 @@ class VirusGame {
     }
 
     updateSpeed(){
-        this.VirusDy <= 2.5 ? this.VirusDy += 0.1 : this.VirusDy = this.VirusDy;
+        this.VirusDy <= 5 ? this.VirusDy += 0.1 : this.VirusDy = this.VirusDy;
     }
 
     update(timestamp) {
