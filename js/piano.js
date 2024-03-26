@@ -4,9 +4,11 @@ class VirusGame {
         this.ctx = this.canvas.getContext("2d");
         this.canvas.width = object.width;
         this.canvas.height = object.height;
+        this.userName = "";
         this.timestamp = 0;
         this.timePassed = 0;
         this.startTime = 0;
+        this.timeDifference = 0;
         this.failScore = 0;
         this.score = 0;
         this.gameStatus = 'play';
@@ -60,6 +62,7 @@ class VirusGame {
                 y: this.canvas.height / 1.33
             }
         ],
+        this.indexPress = null;
 
         this.virusQuantity = object.virusQuantity;
         this.Virus = [];
@@ -72,6 +75,7 @@ class VirusGame {
         this.elFail = object.elFail;
         this.elScore = object.elScore;
         this.elTimer = object.elTimer;
+        this.elPlayer = object.elPlayer;
     }
     Init() {
         for(let i = 1; i < this.virusQuantity; i++){
@@ -122,11 +126,12 @@ class VirusGame {
         this.NotePos.forEach((length,index) => {
             this.ctx.beginPath()
             this.ctx.lineWidth = 5;
-            this.ctx.strokeStyle = '#262626';
             this.ctx.fillStyle = index % 2 == 0 ? "#8067c4" : "#4aa9d6";
-            this.ctx.rect(length.x,length.y,this.canvas.width / 4,180)
+            this.ctx.rect(length.x,length.y,this.canvas.width / 4.1,180)
             this.ctx.fill()
-            this.ctx.stroke()
+
+            this.indexPress !== null && this.indexPress == index ? this.ctx.strokeStyle = "yellow" : this.ctx.strokeStyle = "#262626"; 
+            this.ctx.strokeRect(length.x,length.y,this.canvas.width / 4.1,180);
             this.ctx.closePath()
 
             this.ctx.fillStyle = "white";
@@ -155,10 +160,16 @@ class VirusGame {
     }
 
     updateTimer(timestamp){
-        let second = Math.floor((timestamp / 1000) % 60);
-        let minutes = Math.floor((timestamp / ( 1000 * 60)) % 60);
-        let hours = Math.floor((timestamp / ((1000 * 60) * 60)) % 60);
+        let timeNew = timestamp - this.timeDifference;
+
+        let second = Math.floor((timeNew / 1000) % 60);
+        let minutes = Math.floor((timeNew / ( 1000 * 60)) % 60);
+        let hours = Math.floor((timeNew / ((1000 * 60) * 60)) % 60);
         this.elTimer.innerText = `${hours<10?0:''}${hours}:${minutes<10?0:''}${minutes}:${second<10?0:''}${second}`
+    }
+
+    updatePlayer(){
+        this.elPlayer.innerText = this.userName;
     }
 
     updateFailScore(score){
@@ -183,7 +194,7 @@ class VirusGame {
     updateDanger(x){
         this.Virus.forEach((virus,index) => {
             if(virus.x == x){
-                if(Math.floor(virus.y / this.danger.h) !== 0){
+                if(Math.floor(virus.y / (this.danger.h + 90)) !== 0){
                     this.Virus.splice(index,1);
                     this.updateScore(1);
                 }
@@ -196,6 +207,7 @@ class VirusGame {
             this.updateVirus()
             let gameTime = timestamp - this.startTime;
             this.updateTimer(gameTime);
+            this.updatePlayer();
         }
     }
 
@@ -208,7 +220,10 @@ class VirusGame {
     }
 
     gameOver(){
-        alert(`Try Again!`);
+        let bestScore = localStorage.getItem('score') ?? 0;
+        if(this.score > bestScore) localStorage.setItem('score',this.score);
+        bestScore = localStorage.getItem('score') ?? this.score;
+        alert(`Try Again!, Your Best Score Is : ${bestScore}`);
         this.gameStatus = 'stop';
     }
 
@@ -220,23 +235,25 @@ class VirusGame {
     }
 
     event(){
-        document.addEventListener('keyup',(e) => {
+        document.addEventListener('keydown',(e) => {
             if(e.key == 'd' || e.key == 'D'){
+                this.indexPress = 0;
                 this.Virus.forEach((virus) =>{
                     if(virus.x == this.NotePos[0].x){
-                        this.updateDanger(virus.x,)
-                    }
-                } )
-            }
-            if(e.key == 'f' || e.key == 'F'){
-                this.Virus.forEach((virus) =>{
-
-                    if(virus.x == this.NotePos[1].x){
                         this.updateDanger(virus.x)
                     }
                 } )
             }
+            if(e.key == 'f' || e.key == 'F'){
+                this.indexPress = 1;
+                this.Virus.forEach((virus) =>{
+                    if(virus.x == this.NotePos[1].x){
+                        this.updateDanger(virus.x);
+                    }
+                } )
+            }
             if(e.key == 'j' || e.key == 'J'){
+                this.indexPress = 2;
                 this.Virus.forEach((virus) =>{
                     if(virus.x == this.NotePos[2].x){
                         this.updateDanger(virus.x)
@@ -244,6 +261,7 @@ class VirusGame {
                 } )
             }
             if(e.key == 'k' || e.key == 'K'){
+                this.indexPress = 3;
                 this.Virus.forEach((virus) =>{
                     if(virus.x == this.NotePos[3].x){
                         this.updateDanger(virus.x)
@@ -251,6 +269,22 @@ class VirusGame {
                 } )
             }
         })
+        document.addEventListener('keyup', (e) => {
+            if(e.key == 'd' || e.key == 'D'){
+                this.indexPress = null;
+            }
+            if(e.key == 'f' || e.key == 'F'){
+                this.indexPress = null;
+            }
+            if(e.key == 'j' || e.key == 'J'){
+                this.indexPress = null;
+            }
+            if(e.key == 'k' || e.key == 'K'){
+                this.indexPress = null;
+            }
+        })
+
+
         setInterval(() => {
           if(this.gameStatus == 'play'){
             if(this.Virus.length > 2){
@@ -265,16 +299,29 @@ class VirusGame {
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
         this.draw()
         this.update(timestamp);
+        
+        if(this.gameStatus == 'sendPause'){
+            this.timePassed = timestamp;
+            this.gameStatus = 'pause';
+        }
+
+        if(this.gameStatus == 'sendResume'){
+            this.timeDifference = timestamp - this.timePassed;
+            this.gameStatus = 'play';
+        }
+
         if(this.failScore >= 5 && this.gameStatus == 'play'){
             this.gameOver();
         }
 
+        if(this.gameStatus == 'play'){
+            this.Virus.forEach(virus => {
+                virus.y += this.VirusDy
+            })
+        }
+
         requestAnimationFrame((timestamp) => {
             this.render(timestamp);
-        })
-        
-        this.Virus.forEach(virus => {
-            virus.y += this.VirusDy
         })
     }
 

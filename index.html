@@ -12,33 +12,64 @@
 
 <body>
     <div class="container" id="game">
-        <div class="wrapper-game-status">
-            <div class="status Time">
-                Time: <span id="timer">00:00</span>
+
+        <div class="start-game" id="start-game">
+            <h1>Instruction Virus Slayer</h1>
+            <div class="intruction">
+                <p>1. Input Username and click Play</p>
+                <p>2. Destroy Virus with D F J K Key</p>
+                <p>3. Reach High Score</p>
+                <p>4. Enjoy</p>
             </div>
-            <div class="status Score">
-                Score: <span id="score">0</span>
+            <div class="wrapper-input">
+                <input type="text" autocomplete="off" id="name" placeholder="Input Username">
+                <button class="play" id="play">
+                    Play
+                </button>
             </div>
-            <div class="status Fail">
-                Fail: <span id="fail">0</span>
+        </div>
+
+        <div id="gameplay">
+            <div class="wrapper-game-status">
+                <div class="status Time">
+                    Time: <span id="timer">00:00</span>
+                </div>
+                <div class="status Score">
+                    Score: <span id="score">0</span>
+                </div>
+                <div class="status Fail">
+                    Fail: <span id="fail">0</span>
+                </div>
+                <div class="status Player">
+                    Player: <span id="player-name">Your Name</span>
+                </div>
+                <div class="game-menu">
+                    <div class="wrap">
+                        <h2>Virus Slayer</h2>
+                        <div class="wrapper-link">
+                            <a id="restart">Restart</a>
+                            <a id="quit">Quit</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="status Player">
-                Player: <span>Your Name</span>
+            <div class="game-board">
+                <canvas id="canvas"></canvas>
             </div>
-            <div class="game-menu">
-                <div class="wrap">
-                    <h2>Virus Slayer</h2>
-                    <div class="wrapper-link">
-                        <a id="restart">Restart</a>
-                        <a id="quit">Quit</a>
+            <div class="wrapper" id="stop">
+                <div class="menu" id="menu">
+                    <h3>Paused</h3>
+                    <div class="menu-wrap">
+                        <button class="continue" id="continue">Continue</button>
+                        <button class="restart" id="btn-restart">Restart</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="game-board">
-            <canvas id="canvas"></canvas>
-        </div>
     </div>
+
+        
+
     <script src="js/piano.js"></script>
     <script src="js/script.js"></script>
 </body>
