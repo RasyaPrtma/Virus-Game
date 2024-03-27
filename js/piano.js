@@ -310,11 +310,11 @@ class VirusGame {
         this.update(timestamp);
 
         if (this.gameStatus == 'sendPause') {
-            this.timePassed = timestamp;
+            this.timePassed > 0 ? this.timePassed = this.timePassed + this.timeDifference : this.timePassed = timestamp
             this.gameStatus = 'pause';
         }
 
-        if (this.gameStatus == 'sendResume') {
+        if (this.gameStatus == 'sendResume' || this.gameStatus == 'sendContinue') {
             this.timeDifference = timestamp - this.timePassed;
             this.gameStatus = 'play';
         }
@@ -331,8 +331,8 @@ class VirusGame {
         }
 
         requestAnimationFrame((timestamp) => {
-            this.render(timestamp);
             this.timestamp = timestamp;
+            this.render(timestamp);
         })
     }
 

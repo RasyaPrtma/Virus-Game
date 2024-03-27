@@ -55,7 +55,7 @@ document.addEventListener('keyup', (e) => {
 resume.addEventListener('click',() => {
     countPress = 0;
     elStop.classList.remove('show');
-    Virus.gameStatus = 'sendResume';
+    Virus.gameStatus = 'sendContinue';
 });
 
 restart.addEventListener('click', () => {
