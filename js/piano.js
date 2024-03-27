@@ -310,7 +310,7 @@ class VirusGame {
         this.update(timestamp);
 
         if (this.gameStatus == 'sendPause') {
-            this.timePassed > 0 ? this.timePassed = this.timePassed + this.timeDifference : this.timePassed = timestamp
+            this.timePassed = timestamp;
             this.gameStatus = 'pause';
         }
 
